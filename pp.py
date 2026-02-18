@@ -10,6 +10,19 @@ st.markdown("""
     .main {
         background-color: #F0F4F7;
     }
+    .stButton>button {
+        width: 100%;
+        background-color: #0D2137;
+        color: white;
+        font-weight: bold;
+        height: 3em;
+        border-radius: 5px;
+        border: none;
+    }
+    .stButton>button:hover {
+        background-color: #FFD700;
+        color: #0D2137;
+    }
     .result-box {
         background-color: #0D2137;
         color: #FFD700;
@@ -17,6 +30,7 @@ st.markdown("""
         border-radius: 10px;
         text-align: center;
         border: 2px solid #FFD700;
+        margin-top: 20px;
     }
     .dev-text {
         color: #0D2137;
@@ -43,33 +57,40 @@ with col1:
 with col2:
     inflation_rate = st.number_input("Annual Inflation Rate (%)", min_value=0.0, value=6.0, step=0.1)
 
-# Calculation Logic
-p = Decimal(str(amount))
-r = Decimal(str(inflation_rate)) / 100
-n = int(years)
+# Calculate Button
+st.markdown("<br>", unsafe_allow_html=True)
+calculate_btn = st.button("CALCULATE REAL VALUE")
 
-# Formula: Purchasing Power = P / (1 + r)^n
-val = p / ((1 + r) ** n)
-res = val.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+if calculate_btn:
+    # Calculation Logic
+    p = Decimal(str(amount))
+    r = Decimal(str(inflation_rate)) / 100
+    n = int(years)
 
-# Word formatting for Lakhs/Crores
-word_res = ""
-if res >= 10000000:
-    word_res = f"≈ {float(res)/10000000:.2f} Crore"
-elif res >= 100000:
-    word_res = f"≈ {float(res)/100000:.2f} Lakh"
+    # Formula: Purchasing Power = P / (1 + r)^n
+    val = p / ((1 + r) ** n)
+    res = val.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
-# Result Display
-st.markdown(f"""
-    <div class="result-box">
-        <p style="color: #BDC3C7; margin-bottom: 5px; font-weight: bold;">REAL VALUE IN {n} YEARS</p>
-        <h1 style="color: #FFD700; margin: 0;">₹ {res:,.2f}</h1>
-        <h3 style="color: #FFFFFF; margin-top: 5px;">{word_res}</h3>
-    </div>
-    """, unsafe_allow_html=True)
+    # Word formatting for Lakhs/Crores
+    word_res = ""
+    if res >= 10000000:
+        word_res = f"≈ {float(res)/10000000:.2f} Crore"
+    elif res >= 100000:
+        word_res = f"≈ {float(res)/100000:.2f} Lakh"
 
-# Summary Message
-st.info(f"Summary: Today's ₹{amount:,.0f} will have the same purchasing power as ₹{res:,.2f} in {n} years due to inflation.")
+    # Result Display
+    st.markdown(f"""
+        <div class="result-box">
+            <p style="color: #BDC3C7; margin-bottom: 5px; font-weight: bold;">REAL VALUE IN {n} YEARS</p>
+            <h1 style="color: #FFD700; margin: 0;">₹ {res:,.2f}</h1>
+            <h3 style="color: #FFFFFF; margin-top: 5px;">{word_res}</h3>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Summary Message
+    st.info(f"Summary: Today's ₹{amount:,.0f} will have the same purchasing power as ₹{res:,.2f} in {n} years due to inflation.")
+else:
+    st.write("താങ്കളുടെ പണത്തിന്റെ ഭാവി മൂല്യം അറിയാൻ Calculate ബട്ടൺ അമർത്തുക.")
 
 # Footer/Book Reference
 st.markdown("---")
