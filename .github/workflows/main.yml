@@ -1,8 +1,30 @@
+Skip to content
+shamsu88666-ops
+Home-Loan-EMI-Calculator
+Repository navigation
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security and quality
+Insights
+Settings
+Keep Alive
+Keep Alive #168
+All jobs
+Run details
+Workflow file for this run
+.github/workflows/main.yml at c903358
 name: Keep Alive
 
 on:
   schedule:
     - cron: '0 */6 * * *'
+
+permissions:
+  contents: write
 
 jobs:
   keep-alive:
